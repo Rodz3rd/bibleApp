@@ -1,0 +1,11 @@
+#left-side {
+	overflow-y: scroll;
+}
+
+#left-side, #main-content {
+	border: 1px solid #ccc;
+	padding: 2%;
+	margin: .5% 0;
+
+	height: 98%;
+}
