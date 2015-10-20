@@ -142,23 +142,3 @@ class Bible {
 		}
 	}
 }
-
-
-// $books = Bible::getAllBooks();
-
-// $query = "INSERT INTO url(url, book_id) VALUES";
-
-// foreach ( $books as $book ) {
-// 	$query .= "('" . $book['book_name'] . " url.', ";
-// 	$query .= $book['id'] . "),";
-// }
-
-// $query = trim($query, ",");
-
-// $result = $db->query($query);
-
-// if ( $result != false ) {
-// 	echo "Success";
-// } else {
-// 	echo "Failed";
-// }

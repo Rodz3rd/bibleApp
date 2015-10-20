@@ -64,6 +64,9 @@ $(document).ready( function () {
 
 				// Event Listener
 
+				$(".read, .info, .watch").click( function () {
+					$("#bible-info").fadeOut();
+				});
 				/**
 				* 	Scope of Read Button
 				*/
@@ -141,7 +144,6 @@ $(document).ready( function () {
 					});
 					displayVerseText(book_id, $(this).val(), 1);
 				});
-
 				$("#verse").change( function () {
 					var chapter;
 					if ( $("#chapter").val() == "Chapter" ) {
@@ -251,7 +253,7 @@ $(document).ready( function () {
 							method: "GET",
 
 							success: function (r) {
-								console.log(r.book_name);
+								console.log(r.book_url);
 								$("#watch-content > h3").html(r.book_name);
 								$("#watch-content div").html('<iframe class="embed-responsive-item" src="'+r.book_url+'"></iframe>')
 								$("#watch-content").slideDown(500);
@@ -265,6 +267,434 @@ $(document).ready( function () {
 				});
 			}
 		});
+
+
+		/**
+		* 	Load the content of Modal
+		*/
+
+		// books_all_info means the book, author, date, place
+		var books_all_info =
+				'<div class="table-responsive">\
+					<table class="table table-condensed table-striped table-bordered">\
+						<thead>\
+							<tr>\
+								<th>Books</th>\
+								<th>Author</th>\
+								<th>Date</th>\
+								<th>Place</th>\
+							</tr>\
+						</thead>\
+						<tbody>';
+		var old_books_info= '<tr>\
+								<td>Genesis</td>\
+								<td>Moses</td>\
+								<td>1513 BC</td>\
+								<td>Wilderness Of Sinai</td>\
+							</tr>\
+							<tr>\
+								<td>Exodus</td>\
+								<td>Moses</td>\
+								<td>1512 BC</td>\
+								<td>Wilderness Of Sinai</td>\
+							</tr>\
+							<tr>\
+								<td>Leviticus</td>\
+								<td>Moses</td>\
+								<td>1512 BC</td>\
+								<td>Wilderness Of Sinai</td>\
+							</tr>\
+							<tr>\
+								<td>Numbers</td>\
+								<td>Moses</td>\
+								<td>1473 BC</td>\
+								<td>Wilderness Of Sinai</td>\
+							</tr>\
+							<tr>\
+								<td>Deuteronomy</td>\
+								<td>Moses</td>\
+								<td>1473 BC</td>\
+								<td>Plains of Moab</td>\
+							</tr>\
+							<tr>\
+								<td>Joshua</td>\
+								<td>Joshua</td>\
+								<td>1450 BC</td>\
+								<td>Land of Canaan</td>\
+							</tr>\
+							<tr>\
+								<td>Judges</td>\
+								<td>Samuel</td>\
+								<td>1100 BC</td>\
+								<td>Israel</td>\
+							</tr>\
+							<tr>\
+								<td>Ruth</td>\
+								<td>Samuel</td>\
+								<td>1090 BC</td>\
+								<td>Israel</td>\
+							</tr>\
+							<tr>\
+								<td>I Samuel</td>\
+								<td>Samuel, Gad, Nathan</td>\
+								<td>1077 BC</td>\
+								<td>Israel</td>\
+							</tr>\
+							<tr>\
+								<td>II Samuel</td>\
+								<td>Gad, Nathan</td>\
+								<td>1040 BC</td>\
+								<td>Israel</td>\
+							</tr>\
+							<tr>\
+								<td>I Kings</td>\
+								<td>Jeremiah</td>\
+								<td>580 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>II Kings</td>\
+								<td>Jeremiah</td>\
+								<td>580 BC</td>\
+								<td>Jerusalem and Egypt</td>\
+							</tr>\
+							<tr>\
+								<td>I Chronicles</td>\
+								<td>Ezra</td>\
+								<td>460 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>II Chronicles</td>\
+								<td>Ezra</td>\
+								<td>160 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>Ezra</td>\
+								<td>Ezra</td>\
+								<td>160 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>Nehemiah</td>\
+								<td>Nehemiah</td>\
+								<td>433 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>Esther</td>\
+								<td>Mordecai</td>\
+								<td>474 BC</td>\
+								<td>Elam, Shushan</td>\
+							</tr>\
+							<tr>\
+								<td>Job</td>\
+								<td>Moses</td>\
+								<td>1473 BC</td>\
+								<td>Wilderness Of Sinai</td>\
+							</tr>\
+							<tr>\
+								<td>Psalms</td>\
+								<td>David, Moses, Heman, Ethan</td>\
+								<td>760 BC</td>\
+								<td></td>\
+							</tr>\
+							<tr>\
+								<td>Proverbs</td>\
+								<td>Solomon, Agur, Lemuel</td>\
+								<td>716 BC</td>\
+								<td></td>\
+							</tr>\
+							<tr>\
+								<td>Ecclesiastes</td>\
+								<td>Solomon</td>\
+								<td>1000 BC</td>\
+								<td></td>\
+							</tr>\
+							<tr>\
+								<td>Songs of Solomon</td>\
+								<td>Solomon</td>\
+								<td>1020 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>Isaiah</td>\
+								<td>Isaiah</td>\
+								<td>732 BC</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>Jeremiah</td>\
+								<td>Jeremiah</td>\
+								<td>580 BC</td>\
+								<td>Judah, Jerusalem, Egypt</td>\
+							</tr>\
+							<tr>\
+								<td>Lamentation</td>\
+								<td>Jeremiah</td>\
+								<td>607 BC</td>\
+								<td>Near Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>Ezekiel</td>\
+								<td>Ezekiel</td>\
+								<td>591 BC</td>\
+								<td>Babylon</td>\
+							</tr>\
+							<tr>\
+								<td>Daniel</td>\
+								<td>Daniel</td>\
+								<td>536 BC</td>\
+								<td>Babylon</td>\
+							</tr>\
+							<tr>\
+								<td>Hosea</td>\
+								<td>Hosea</td>\
+								<td>745 BC</td>\
+								<td>Samaria District</td>\
+							</tr>\
+							<tr>\
+								<td>Joel</td>\
+								<td>Joel</td>\
+								<td>820 BC</td>\
+								<td>Judah when the kingdom is divided</td>\
+							</tr>\
+							<tr>\
+								<td>Amos</td>\
+								<td>Amos</td>\
+								<td>803 BC</td>\
+								<td>Judah</td>\
+							</tr>\
+							<tr>\
+								<td>Obadiah</td>\
+								<td>Obadiah</td>\
+								<td>807 BC</td>\
+								<td>Babylon during captivity</td>\
+							</tr>\
+							<tr>\
+								<td>Jonah</td>\
+								<td>Jonah</td>\
+								<td>844 BC</td>\
+								<td></td>\
+							</tr>\
+							<tr>\
+								<td>Micah</td>\
+								<td>Micah</td>\
+								<td>716 BC</td>\
+								<td>Judah</td>\
+							</tr>\
+							<tr>\
+								<td>Nahum</td>\
+								<td>Nahum</td>\
+								<td>532 BC</td>\
+								<td>Judah</td>\
+							</tr>\
+							<tr>\
+								<td>Habakkuk</td>\
+								<td>Havakkuk</td>\
+								<td>628 BC</td>\
+								<td>Judah</td>\
+							</tr>\
+							<tr>\
+								<td>Zephaniah</td>\
+								<td>Zephaniah</td>\
+								<td>648 BC</td>\
+								<td>Judah</td>\
+							</tr>\
+							<tr>\
+								<td>Haggai</td>\
+								<td>Haggai</td>\
+								<td>520 BC</td>\
+								<td>Jerusalem was rebuilt</td>\
+							</tr>\
+							<tr>\
+								<td>Zechariah</td>\
+								<td>Zechariah</td>\
+								<td>518 BC</td>\
+								<td>Jerusalem was rebuilt</td>\
+							</tr>\
+							<tr>\
+								<td>Malachi</td>\
+								<td>Malachi</td>\
+								<td>443 BC</td>\
+								<td>Jerusalem was rebuilt</td>\
+							</tr>';
+		var new_books_info='<tr>\
+								<td>Matthew</td>\
+								<td>Matthew</td>\
+								<td>41 AD</td>\
+								<td>Palestine</td>\
+							</tr>\
+							<tr>\
+								<td>Mark</td>\
+								<td>Mark</td>\
+								<td>60-65 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>Luke</td>\
+								<td>Luke</td>\
+								<td>56 AD</td>\
+								<td>Caesarea</td>\
+							</tr>\
+							<tr>\
+								<td>John</td>\
+								<td>John</td>\
+								<td>98 AD</td>\
+								<td>Ephesus</td>\
+							</tr>\
+							<tr>\
+								<td>Acts</td>\
+								<td>Luke</td>\
+								<td>61 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>Romans</td>\
+								<td>Paul</td>\
+								<td>56 AD</td>\
+								<td>Corinth</td>\
+							</tr>\
+							<tr>\
+								<td>I Corinthians</td>\
+								<td>Paul</td>\
+								<td>55 AD</td>\
+								<td>Ephesus</td>\
+							</tr>\
+							<tr>\
+								<td>II Corinthians</td>\
+								<td>Paul</td>\
+								<td>55 AD</td>\
+								<td>Macedonia</td>\
+							</tr>\
+							<tr>\
+								<td>Galatians</td>\
+								<td>Paul</td>\
+								<td>50-52 AD</td>\
+								<td>Corinth and Antioch</td>\
+							</tr>\
+							<tr>\
+								<td>Ephesians</td>\
+								<td>Paul</td>\
+								<td>60-61 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>Philippians</td>\
+								<td>Paul</td>\
+								<td>60-61 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>Colossians</td>\
+								<td>Paul</td>\
+								<td>60-61 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>I Thessalonians</td>\
+								<td>Paul</td>\
+								<td>50 AD</td>\
+								<td>Corinth</td>\
+							</tr>\
+							<tr>\
+								<td>II Thessalonians</td>\
+								<td>Paul</td>\
+								<td>51 AD</td>\
+								<td>Corinth</td>\
+							</tr>\
+							<tr>\
+								<td>I Timothy</td>\
+								<td>Paul</td>\
+								<td>61-64 AD</td>\
+								<td>Macedonia</td>\
+							</tr>\
+							<tr>\
+								<td>II Timothy</td>\
+								<td>Paul</td>\
+								<td>65 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>Titus</td>\
+								<td>Paul</td>\
+								<td>61-64 AD</td>\
+								<td>Macedonia</td>\
+							</tr>\
+							<tr>\
+								<td>Philemon</td>\
+								<td>Paul</td>\
+								<td>60-61 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>Hebrew</td>\
+								<td>Paul</td>\
+								<td>61 AD</td>\
+								<td>Rome</td>\
+							</tr>\
+							<tr>\
+								<td>James</td>\
+								<td>James</td>\
+								<td>61-62 AD</td>\
+								<td>Jerusalem</td>\
+							</tr>\
+							<tr>\
+								<td>I Peter</td>\
+								<td>St. Peter</td>\
+								<td>62-64 AD</td>\
+								<td>Babylon</td>\
+							</tr>\
+							<tr>\
+								<td>II Peter</td>\
+								<td>St. Peter</td>\
+								<td>64 AD</td>\
+								<td>Babylon</td>\
+							</tr>\
+							<tr>\
+								<td>I John</td>\
+								<td>John</td>\
+								<td>98 AD</td>\
+								<td>Ephesus</td>\
+							</tr>\
+							<tr>\
+								<td>II John</td>\
+								<td>John</td>\
+								<td>98 AD</td>\
+								<td>Ephesus</td>\
+							</tr>\
+							<tr>\
+								<td>III John</td>\
+								<td>John</td>\
+								<td>98 AD</td>\
+								<td>Near Ephesus</td>\
+							</tr>\
+							<tr>\
+								<td>Jude</td>\
+								<td>Jude</td>\
+								<td>65 AD</td>\
+								<td>Palestine</td>\
+							</tr>\
+							<tr>\
+								<td>Revelations</td>\
+								<td>John</td>\
+								<td>96 AD</td>\
+								<td>Island of Patmos</td>\
+						</tbody>';
+		var books_all_info_foot =
+						'<tfoot>\
+							<tr>\
+								<td colspan="4">\
+									<button class="btn btn-sm btn-default pull-right" data-dismiss="modal">Close</button>\
+								</td>\
+							</tr>\
+						</tfoot>\
+					</table>\
+				</div>';
+
+		$("#old-books-info").html(books_all_info + old_books_info + books_all_info_foot);
+		$("#new-books-info").html(books_all_info + new_books_info + books_all_info_foot);
 	}
 
 	function displayVerseText(book_id, chapter, verse) {

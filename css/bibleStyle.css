@@ -9,3 +9,10 @@
 
 	height: 98%;
 }
+
+#bible-image {
+	width: 100%;
+	height: 20%;
+
+	cursor: default;
+}
